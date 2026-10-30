@@ -17,6 +17,6 @@ extern char ip[INET_ADDRSTRLEN];
 
 socket_t net_socket(void);
 ssize_t udp_recv(socket_t sockfd, char *buffer, size_t size);
-ssize_t udp_send(socket_t sockfd, const char *buffer, size_t size);
+ssize_t udp_send(socket_t sockfd, const char *dest_ip, const char *buffer, size_t size);
 void net_init();
 void net_cleanup(socket_t sockfd);

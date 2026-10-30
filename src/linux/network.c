@@ -46,7 +46,7 @@ void socket_bind(socket_t sockfd) {
     struct sockaddr_in addr = {
         .sin_family = AF_INET,
         .sin_port = htons(5000),
-        .sin_addr.s_addr = htonl(INADDR_LOOPBACK)
+        .sin_addr.s_addr = htonl(INADDR_ANY)
     };
 
     if (bind(sockfd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
@@ -81,12 +81,16 @@ ssize_t udp_recv(socket_t sockfd, char *buffer, size_t size) {
     return length;
 }
 
-ssize_t udp_send(socket_t sockfd, const char *buffer, size_t size) {
+ssize_t udp_send(socket_t sockfd, const char *dest_ip, const char *buffer, size_t size) {
     struct sockaddr_in addr = {
         .sin_family = AF_INET,
-        .sin_port = htons(5000),
-        .sin_addr.s_addr = htonl(INADDR_LOOPBACK)
+        .sin_port = htons(5000)
     };
+
+    if (inet_pton(AF_INET, dest_ip, &addr.sin_addr) != 1) {
+        fprintf(stderr, "Invalid destination IP: %s\n", dest_ip);
+        return -1;
+    }
 
     ssize_t length = sendto(
         sockfd,
@@ -99,8 +103,7 @@ ssize_t udp_send(socket_t sockfd, const char *buffer, size_t size) {
 
     if (length < 0) {
         perror("sendto");
-        close(sockfd);
-        exit(EXIT_FAILURE);
+        return -1;
     }
 
     return length;

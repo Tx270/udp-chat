@@ -2,6 +2,7 @@
 #include "terminal.h"
 #include "display.h"
 #include "wait.h"
+#include <netinet/in.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
@@ -53,7 +54,7 @@ int main(void) {
                         input_buffer
                     );
                     
-                    udp_send(sockfd, message_buffer, strlen(message_buffer));
+                    udp_send(sockfd, "127.0.0.1", message_buffer, strlen(message_buffer));
                     
                     input_buffer[0] = '\0';
                 }
