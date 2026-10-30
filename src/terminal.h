@@ -1,6 +1,9 @@
 #pragma once
+#include <signal.h>
 #include <stddef.h>
 #include <sys/types.h>
+
+extern volatile sig_atomic_t running;
 
 int term_init(void);
 void term_cleanup(void);

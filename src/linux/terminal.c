@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 200809L
 #include <stddef.h>
 #include <sys/types.h>
 #include "../terminal.h"
@@ -6,13 +7,29 @@
 #include <unistd.h>
 #include <termios.h>
 #include <sys/ioctl.h>
+#include <signal.h>
 
 
 static struct termios saved_termios;
 static int was_termios_saved = 0;
+volatile sig_atomic_t running = 1;
 
+
+void handle_signal(int signal) {
+    (void)signal;
+    running = 0;
+}
 
 int term_init(void) {
+    struct sigaction sa = {0};
+
+    sa.sa_handler = handle_signal;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;
+
+    sigaction(SIGINT, &sa, NULL);
+    sigaction(SIGTERM, &sa, NULL);
+
     struct termios termios;
 
     if (tcgetattr(STDIN_FILENO, &saved_termios) == -1)
@@ -41,6 +58,7 @@ void term_cleanup(void) {
         tcsetattr(STDIN_FILENO, TCSANOW, &saved_termios);
         was_termios_saved = 0;
     }
+    term_print("\033[2J\033[H", 7);
 }
 
 void term_print(const char *buffer, size_t length) {

@@ -30,10 +30,10 @@ int poll_wait(socket_t sockfd, int timeout_ms) {
     int ready = 0;
 
     if (fds[0].revents & POLLIN)
-        ready |= NET_INPUT;
+        ready |= POLL_INPUT;
 
     if (fds[1].revents & POLLIN)
-        ready |= NET_SOCKET;
+        ready |= POLL_SOCKET;
 
     return ready;
 }

@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Wpedantic -std=c11
-TARGET = udp-chat
+TARGET = build/udp-chat
 
 SOURCES = $(shell find src -type f -name '*.c')
 HEADERS = $(shell find src -type f -name '*.h')

@@ -6,8 +6,8 @@
 
 char display_buffer[65536];
 size_t display_pos = 0;
-char input_buffer[128];
-char chat_buffer[1024][128];
+char input_buffer[255] = {0};
+char chat_buffer[1024][255];
 int chat_count = 0;
 
 
@@ -76,11 +76,6 @@ void display() {
 
     term_print(display_buffer, display_pos);
     display_pos = 0;
-}
-
-void print_input(const char *str) {
-    strcpy(input_buffer, str);
-    display();
 }
 
 void print_message(const char *str) {

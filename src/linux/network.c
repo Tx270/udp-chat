@@ -38,8 +38,8 @@ int get_local_ip(char *buffer, size_t size) {
     return result;
 }
 
-void net_init() {
-    get_local_ip(ip, sizeof(ip));
+int net_init() {
+    return get_local_ip(ip, sizeof(ip));
 }
 
 void socket_bind(socket_t sockfd) {
