@@ -1,6 +1,5 @@
 #pragma once
 #define _DEFAULT_SOURCE
-#include <netinet/in.h>
 #include <stddef.h>
 
 #ifdef _WIN32
@@ -12,6 +11,7 @@
     typedef SSIZE_T ssize_t;
     #endif
 #else
+    #include <netinet/in.h>
     #include <sys/types.h>
     typedef int socket_t;
     typedef ssize_t net_length_t;

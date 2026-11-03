@@ -114,7 +114,7 @@ static void emit(char *buffer, size_t size, size_t *out, const char *bytes, size
 }
 
 /* Returns 1 if there is a real key press waiting (non-key events are discarded). */
-int term_input_available(void) {
+ssize_t term_input_available(void) {
     if (pending_len > 0)
         return 1;
 
