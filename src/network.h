@@ -5,8 +5,12 @@
 
 #ifdef _WIN32
     #include <winsock2.h>
+    #include <ws2tcpip.h>
     typedef SOCKET socket_t;
-    typedef int net_length_t;
+    #ifdef _MSC_VER
+    #include <BaseTsd.h>
+    typedef SSIZE_T ssize_t;
+    #endif
 #else
     #include <sys/types.h>
     typedef int socket_t;
